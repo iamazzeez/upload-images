@@ -5,21 +5,24 @@ import Cropper from 'react-cropper';
 
 /* global FileReader */
 
-const src = require('../src/img/shopping.JPG');
+// const src = require('../src/img/shopping.JPG');
 
 export default class Demo extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      src,
+      src: null,
       cropResult: [],
-      arr: []
+      dimensions: {},
+      message: '',
+      crop: false
       
     };
     this.cropImage = this.cropImage.bind(this);
     this.onChange = this.onChange.bind(this);
-    this.useDefaultImage = this.useDefaultImage.bind(this);
+    this.onImgLoad = this.onImgLoad.bind(this);
+    // this.useDefaultImage = this.useDefaultImage.bind(this);
   }
 
   onChange(e) {
@@ -29,44 +32,22 @@ export default class Demo extends Component {
       files = e.dataTransfer.files;
     } else if (e.target) {
       files = e.target.files;
-      console.log(files[0])
+    
     }
-    console.log(e.target)
-    var reader = new FileReader();
 
-//Read the contents of Image File.
-reader.readAsDataURL(files[0]);
-reader.onload = function (e) {
-
-//Initiate the JavaScript Image object.
-var image = new Image();
-
-//Set the Base64 string return from FileReader as source.
-image.src = e.target.result;
-
-//Validate the File Height and Width.
-image.onload = function () {
-  var height = this.height;
-  var width = this.width;
-  if (height > 100 || width > 100) {
-    alert("Height and Width must not exceed 100px.");
-    return false;
-  }
-  alert("Uploaded image has valid Height and Width.");
-  return true;
-};
-  }
-
-    // const reader = new FileReader();
+    const reader = new FileReader();
     reader.onload = () => {
+
       this.setState({ src: reader.result });
       
     };
-    // reader.readAsDataURL(files[0]);
+    reader.readAsDataURL(files[0]);
   }
 
   cropImage() {
     if (typeof this.cropper.getCroppedCanvas() === 'undefined') {
+      return;
+    }  else if(!this.state.crop){
       return;
     }
 
@@ -75,44 +56,31 @@ image.onload = function () {
     });
   }
 
-  useDefaultImage() {
-    this.setState({ src });
-  }
+  // useDefaultImage() {
+  //   this.setState({ src });
+  // }
 
-  nextDimenstion() {
-// var reader = new FileReader();
+  onImgLoad({target:img}) {
+    console.log( img.offsetHeight)
+    if(img.offsetHeight === 1024 && img.offsetWidth === 1024){
+    this.setState({dimensions:{height:img.offsetHeight,
+                               width:img.offsetWidth}, crop: true, message: ''});
+    } else {
 
-// //Read the contents of Image File.
-// reader.readAsDataURL(fileUpload.files[0]);
-// reader.onload = function (e) {
-
-// //Initiate the JavaScript Image object.
-// var image = new Image();
-
-// //Set the Base64 string return from FileReader as source.
-// image.src = e.target.result;
-
-// //Validate the File Height and Width.
-// image.onload = function () {
-//   var height = this.height;
-//   var width = this.width;
-//   if (height > 100 || width > 100) {
-//     alert("Height and Width must not exceed 100px.");
-//     return false;
-//   }
-//   alert("Uploaded image has valid Height and Width.");
-//   return true;
-// };
-//   }
+      this.setState({message: 'Image is not of recommended size of 1024px*1024px', src: null, })
+    }
 }
+ 
 
   render() {
-    console.log(typeof this.state.cropResult)
     return (
       <div style={{display: 'flex', flexDirection: 'column', margin: '20px'}}>
         <div style={{ width: '100%' }}>
           <input type="file" onChange={this.onChange} />
-          <button onClick={this.useDefaultImage}>Use default img</button>
+          {/* <button onClick={this.useDefaultImage}>Use default img</button> */}
+          <h4>{this.state.message}</h4>
+          dimensions width{this.state.dimensions.width}, height{this.state.dimensions.height}
+          <img onLoad={this.onImgLoad} src={this.state.src}/>
           <br />
           <br />
           <Cropper
