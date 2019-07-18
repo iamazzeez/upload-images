@@ -3,9 +3,7 @@ import 'cropperjs/dist/cropper.css';
 
 import Cropper from 'react-cropper';
 
-/* global FileReader */
 
-// const src = require('../src/img/shopping.JPG');
 
 export default class UploadPage extends Component {
 
@@ -29,12 +27,10 @@ export default class UploadPage extends Component {
     this.cropImageGallery = this.cropImageGallery.bind(this);
     this.onChange = this.onChange.bind(this);
     this.onImgLoad = this.onImgLoad.bind(this);
-    // this.useDefaultImage = this.useDefaultImage.bind(this);
+
   }
 
-  componentDidMount(){
-      
-  }
+
 
   onUpload = () => {
     if(this.state.cropResult1 === null || this.state.cropResult2 === null || this.state.cropResult3 === null || this.state.cropResult4 === null){
@@ -132,12 +128,9 @@ export default class UploadPage extends Component {
     this.setState({cropResult4:this.cropper4.getCroppedCanvas().toDataURL(),
     });
   }
-  // useDefaultImage() {
-  //   this.setState({ src });
-  // }
+
 
   onImgLoad({target:img}) {
-    // console.log( img.offsetHeight)
     if(img.offsetHeight === 1024 && img.offsetWidth === 1024){
     this.setState({dimensions:{height:img.offsetHeight,
                                width:img.offsetWidth}, crop: true, message: ''});
@@ -154,7 +147,6 @@ export default class UploadPage extends Component {
       <div style={{display: 'flex', flexDirection: 'column', margin: '20px'}}>
         <div style={{ width: '100%' }}>
           <input type="file" onChange={this.onChange} />
-          {/* <button onClick={this.useDefaultImage}>Use default img</button> */}
           <h4>{this.state.message}</h4>
           dimensions width{this.state.dimensions.width}, height{this.state.dimensions.height}
         

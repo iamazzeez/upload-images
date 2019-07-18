@@ -47,27 +47,27 @@ export default class ViewPage extends Component {
             <div className="container">
                 <h2>Horizontal Images</h2>
                 {this.state.images.map(image => (
-                    <div className='m-1'>
+                    <div className='m-2'>
                    <img src={image.horizontal} alt="cropped image" />
                    </div>
                 ))}
                <h2>Vertical Images</h2>
                {this.state.images.map(image => (
-                    <div className='m-1'>
+                    <div className='m-2'>
                    <img  src={image.vertical} alt="cropped image" />
                 
                    </div>
                 ))}
                <h2>Horizontal Small Images</h2>
                {this.state.images.map(image => (
-                    <div className='m-1'>
+                    <div className='m-2'>
                    <img  src={image.hsmall} alt="cropped image" />
         
                    </div>
                 ))}
                <h2>Gallery Images</h2>
                {this.state.images.map(image => (
-                    <div className='m-1'>
+                    <div className='m-2'>
                    <img  src={image.gallery} alt="cropped image" />
                    <br />
                    </div>
